@@ -16,7 +16,6 @@ async function setBearerToken() {
     headers: {
       Authorization: `Basic ${credentials}`,
       'Content-Type': 'application/x-www-form-urlencoded',
-      Accept: '*/*',
     },
     form: {
       grant_type: 'client_credentials',
@@ -26,7 +25,7 @@ async function setBearerToken() {
   const responseBody = await response.json()
   expect(response.status()).toBe(200)
 
-  // Get the Bearer token from the response
+  // Set the Bearer token from the response
   process.env.BEARER_TOKEN = responseBody.access_token
 }
 

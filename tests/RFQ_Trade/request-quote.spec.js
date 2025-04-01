@@ -1,55 +1,78 @@
 import { test, expect } from '@playwright/test'
 import { stringFormat } from '../../utils/common.js'
 
-const postRequestBody = require('../../test-data/post_trade_request_body.json')
-const apiAsserttions = require('../../utils/api-assertions.js')
+const requestHeaders = require('../../test-data/request-json/request_headers.json')
+const postQuoteRequestBody = require('../../test-data/request-json/post_quote_request_body.json')
+const expectedPostQuoteResponseBody = require('../../test-data/response-json/post_quote_response_body.json')
+
+const apiAssertions = require('../../utils/api-assertions.js')
 const apiRequest = require('../../utils/api-request.js')
-const bearerTokenRequestHeaders = require('../../test-data/request_headers_with_bearer_token.json')
+
+let requestHeadersWithBearerToken
+
+test.beforeAll('test setup', async () => {
+  requestHeadersWithBearerToken = stringFormat(
+    JSON.stringify(requestHeaders),
+    `Bearer ${process.env.BEARER_TOKEN}`
+  )
+})
 
 test.describe('Request a Quote', () => {
   test('Valid Quote Request', async ({ request }) => {
-    const headersWithBearerToken = stringFormat(
-      JSON.stringify(bearerTokenRequestHeaders),
-      `Bearer ${process.env.BEARER_TOKEN}`
+    const response = await apiRequest.post(
+      '/api/v1/quotes',
+      JSON.parse(requestHeadersWithBearerToken),
+      postQuoteRequestBody
     )
 
-    // const response = await request.post(
-    //   '/api/v1/quotes', {
-    //   headers : {
-    //     'Authorization': `Bearer ${process.env.BEARER_TOKEN}`,
-    //     'Content-Type': 'application/json'
-    //     // 'Accept': '*/*'
-    //   },
-    //     data : postRequestBody
-    //   });
+    const responseBody = await response.json()
+    const jsonResponseObjectProperties = JSON.parse(
+      JSON.stringify(expectedPostQuoteResponseBody)
+    )
+    apiAssertions.assertThatResponseIsOk(response)
+    apiAssertions.assertResponseStatus(response, 200)
+    apiAssertions.assertResponseBodyHasProperty(
+      responseBody,
+      jsonResponseObjectProperties
+    )
 
-    // const response = await request.post(
-    //   '/api/v1/quotes', {
-    //   headers : JSON.parse(headersWithBearerToken),
-    //     data : postRequestBody
-    //   });
+    const quoteId = responseBody.quoteId
+    expect(quoteId).not.toBeNull()
+    expect(quoteId).not.toBe('')
+    expect(quoteId).not.toBeUndefined()
+  })
+
+  test('Invalid Quote Request with missing parameter', async ({ request }) => {
+    //delete 'pair' parameter from request body
+    delete postQuoteRequestBody.pair
 
     const response = await apiRequest.post(
-      `https://camsapi-dev.aquanow.io/api/v1/quotes`,
-      JSON.parse(headersWithBearerToken),
-      postRequestBody
+      '/api/v1/quotes',
+      JSON.parse(requestHeadersWithBearerToken),
+      postQuoteRequestBody
     )
 
-    console.log('response is ', response)
-    console.log('responseBody is ', await response.json())
-    // const responseBody = await response.json();
-    // apiAsserttions.assertThatResponseIsOk(response);
+    const responseBody = await response.json()
+    apiAssertions.assertResponseStatus(response, 400)
+    apiAssertions.assertResponseErrorMessage(responseBody, 'pair is required')
+  })
 
-    // expect(response.status()).toBe(200);
-    // apiAsserttions.assertResponseStatus(response, 200);
+  test('Invalid Quote Request with invalid parameter', async ({ request }) => {
+    //delete 'side' parameter from request body & adding invalid value to side parameter
+    delete postQuoteRequestBody.side
+    postQuoteRequestBody.side = 'test'
 
-    // const jsonObjectProperties = {
-    //   'accountId':'82a77651-3499-4767-ac8f-f4291dde140c',
-    //   'pair':'BTC-USD',
-    //   'side':'BUY',
-    //   'quoteQuantity':'103.06'
-    // }
-    // apiAsserttions.assertResponseBodyHasProperty(responseBody, jsonObjectProperties);
-    // console.log('headersWithBearerToken',headersWithBearerToken)
+    const response = await apiRequest.post(
+      '/api/v1/quotes',
+      JSON.parse(requestHeadersWithBearerToken),
+      postQuoteRequestBody
+    )
+
+    const responseBody = await response.json()
+    apiAssertions.assertResponseStatus(response, 400)
+    apiAssertions.assertResponseErrorMessage(
+      responseBody,
+      'side must be one of BUY SELL'
+    )
   })
 })
