@@ -1,0 +1,8 @@
+{
+    "accountId": "82a77651-3499-4767-ac8f-f4291dde140c",
+    "pair": "BTC-USD",
+    "side": "BUY",
+    "deliverQuantity": "103.06",
+    "clientFeeRate": "30",
+    "clientReference": "test"
+}
