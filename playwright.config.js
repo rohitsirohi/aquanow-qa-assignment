@@ -21,8 +21,9 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: [['html'], ['allure-playwright']],
   use: {
-    // baseURL: 'http://127.0.0.1:3000',
     baseURL: 'https://camsapi-dev.aquanow.io',
+    video: 'retain-on-failure',
+    screenshot: 'only-on-failure',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
