@@ -19,6 +19,8 @@
       <ul>
         <li><a href="#framework-used">Framework Used</a></li>
         <li><a href="#how-to-run-test">How to run test</a></li>
+        <li><a href="#how-to-generate-allure-report">How to generate allure report</a></li>
+        <li><a href="#how-to-open-allure-report">How to open allure report</a></li>
       </ul>
     </li>
     <li><a href="#about-author">About Author</a></li>
@@ -50,7 +52,15 @@ Playwright
 
 ### How to run test
 
-npm playwright test
+`npm playwright test`
+
+### How to generate allure report
+
+`allure generate allure-results -o allure-report --clean`
+
+### How to open allure report
+
+`allure open allure-report`
 
 <p align="right">[<a href="#readme-top">back to top</a>]</p>
 

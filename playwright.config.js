@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test'
 require('dotenv').config()
 
 /**
@@ -10,7 +10,6 @@ require('dotenv').config()
 // import path from 'path';
 // dotenv.config({ path: path.resolve(__dirname, '.env') });
 
-
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
@@ -20,7 +19,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: 'html',
+  reporter: [['html'], ['allure-playwright']],
   use: {
     // baseURL: 'http://127.0.0.1:3000',
     baseURL: 'https://camsapi-dev.aquanow.io',
@@ -37,6 +36,5 @@ export default defineConfig({
     },
   ],
 
-  globalSetup: require.resolve('./global-setup')
-});
-
+  globalSetup: require.resolve('./global-setup'),
+})
