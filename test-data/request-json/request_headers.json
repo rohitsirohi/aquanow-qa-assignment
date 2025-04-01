@@ -1,4 +1,4 @@
 {
-    "Authorization": "{0}",
-    "Content-Type": "application/json"
+  "Authorization": "{0}",
+  "Content-Type": "application/json"
 }
