@@ -1,0 +1,12 @@
+{
+  "orderId": "77c75471-c06a-4946-a927-14fef79715e9",
+  "accountId": "82a77651-3499-4767-ac8f-f4291dde140c",
+  "orderStatus": "FILLED",
+  "side": "BUY",
+  "pair": "BTC-USD",
+  "strategy": "RFQ",
+  "fillPercentage": "100",
+  "clientFeeRate": "30",
+  "providerFeeRate": "0",
+  "clientReference": "test"
+}
