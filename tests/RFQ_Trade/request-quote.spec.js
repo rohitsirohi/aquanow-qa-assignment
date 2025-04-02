@@ -13,8 +13,7 @@ test.beforeAll('test setup', async () => {
   requestHeaders = JSON.parse(
     stringFormat(
       JSON.stringify(requestHeadersJson),
-      // `Bearer ${process.env.BEARER_TOKEN}`
-      'Bearer eyJraWQiOiJBeWRrbjkrck5lSTlzdll5N3NSWjFqV3B3dGE1UlBSZTBJRXlKT0FzZHpBPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI1MDlnZ242aW5qZTNpN2JzZmg2MGthODU0YiIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXF1YWNhbXMtZGV2XC93cml0ZSBhcXVhY2Ftcy1kZXZcL3JlYWQgY29tcGxpYW5jZVwvZGVmYXVsdCIsImF1dGhfdGltZSI6MTc0MzYxNjIzNiwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfZkkxeWJTT2RDIiwiZXhwIjoxNzQzNjE5ODM2LCJpYXQiOjE3NDM2MTYyMzYsInZlcnNpb24iOjIsImp0aSI6ImFmNzAwYTkxLTY0YmEtNDc0Mi1hNDAzLWYxNjA2YTViYjNmZiIsImNsaWVudF9pZCI6IjUwOWdnbjZpbmplM2k3YnNmaDYwa2E4NTRiIn0.AKXQ4Mrk8KmKTnDJFsu6PSJsFXxpr6zJEFhtSpMl62xnPB0R3fFTL40UpnaMU6iYwcOKdcpp7Wh8cwn3-_loLPBvNusBBL7iM1lBkz4rBOiOCvmmT3sBuLAW8F-6ZfF3d2uDH6k-4LM_QkM7FYvyi_fzwuvPgdHdgRbUPfEnmypnuD3Z6eM6FeDuloGNnOmg_385oMK7LOc7QWQu2wEs_qZlNsGxrKDxf_5cjfifJfcoKbKQPal0vzeKtegS7ArPgByBJ3AsZX5th-kkP6xBc7EFt15C8HYrXAyMGiLoZZn7zaeu6OXCJ3kvUMOnVIBfl_1jql4A-EOch_Ai6ipHvg'
+      `Bearer ${process.env.BEARER_TOKEN}`
     )
   )
 })
@@ -47,13 +46,13 @@ test.describe('Request a Quote', () => {
 
   test('Request Quote with missing parameter', async ({ request }) => {
     //delete 'pair' parameter from request body
-    const invalidRequestQuoteJson = requestQuoteJson
-    delete invalidRequestQuoteJson.pair
+    const missingParamRequestQuoteJson = requestQuoteJson
+    delete missingParamRequestQuoteJson.pair
 
     const requestQuoteResponse = await apiRequest.post(
       '/api/v1/quotes',
       requestHeaders,
-      invalidRequestQuoteJson
+      missingParamRequestQuoteJson
     )
 
     const requestQuoteResponseBody = await requestQuoteResponse.json()
