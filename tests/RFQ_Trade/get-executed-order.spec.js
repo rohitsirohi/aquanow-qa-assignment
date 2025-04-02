@@ -22,7 +22,7 @@ test.beforeAll('test setup', async () => {
   )
 })
 
-test.beforeEach('Request quote and fetch quote id', async () => {
+test.beforeEach('Get quote id and order id', async () => {
   await test.step('Get Quote Id', async () => {
     const requestQuoteResponse = await apiRequest.post(
       '/api/v1/quotes',
@@ -39,32 +39,30 @@ test.beforeEach('Request quote and fetch quote id', async () => {
     expect(quoteId).not.toBe('')
     expect(quoteId).not.toBeUndefined()
   })
+  await test.step('Get Order Id', async () => {
+    const executeQuoteRequest = { ...executeQuoteRequestJson }
+    const executeQuoteResponse = await apiRequest.post(
+      '/api/v1/orders',
+      requestHeaders,
+      stringFormat(JSON.stringify(executeQuoteRequest), quoteId)
+    )
+    const executeQuoteResponseBody = await executeQuoteResponse.json()
+    apiAssertions.assertThatResponseIsOk(executeQuoteResponse)
+    apiAssertions.assertResponseStatus(executeQuoteResponse, 200)
+
+    orderId = executeQuoteResponseBody.order.orderId
+    expect(orderId).not.toBeNull()
+    expect(orderId).not.toBe('')
+    expect(orderId).not.toBeUndefined()
+  })
 })
 
 test.describe('Get order details', () => {
   test('Get valid order details', async ({ request }) => {
-    await test.step('Get Order Id', async () => {
-      const executeQuoteResponse = await apiRequest.post(
-        '/api/v1/orders',
-        requestHeaders,
-        stringFormat(JSON.stringify(executeQuoteRequestJson), quoteId)
-      )
-      const executeQuoteResponseBody = await executeQuoteResponse.json()
-
-      apiAssertions.assertThatResponseIsOk(executeQuoteResponse)
-      apiAssertions.assertResponseStatus(executeQuoteResponse, 200)
-
-      orderId = executeQuoteResponseBody.order.orderId
-      expect(orderId).not.toBeNull()
-      expect(orderId).not.toBe('')
-      expect(orderId).not.toBeUndefined()
-    })
-
     const getOrderDetailsResponse = await apiRequest.get(
       `/api/v1/orders/${orderId}`,
       requestHeaders
     )
-
     const getOrderDetailsResponseBody = await getOrderDetailsResponse.json()
 
     apiAssertions.assertThatResponseIsOk(getOrderDetailsResponse)
@@ -96,5 +94,23 @@ test.describe('Get order details', () => {
       getOrderDetailsResponseBody,
       'Not found'
     )
+  })
+
+  test('Assert if order exists in list of orders', async ({ request }) => {
+    const getOrderDetailsResponse = await apiRequest.get(
+      `/api/v1/orders`,
+      requestHeaders
+    )
+
+    const getOrderDetailsResponseBody = await getOrderDetailsResponse.json()
+
+    apiAssertions.assertThatResponseIsOk(getOrderDetailsResponse)
+    apiAssertions.assertResponseStatus(getOrderDetailsResponse, 200)
+
+    expect(getOrderDetailsResponseBody.items).toBeDefined()
+    const orderFound = getOrderDetailsResponseBody.items.some(
+      (item) => item.orderId === orderId
+    )
+    expect(orderFound).toBe(true)
   })
 })

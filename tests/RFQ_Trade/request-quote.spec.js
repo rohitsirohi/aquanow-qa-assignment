@@ -9,7 +9,7 @@ const apiAssertions = require('../../utils/api-assertions.js')
 const apiRequest = require('../../utils/api-request.js')
 let requestHeaders
 
-test.beforeAll('test setup', async () => {
+test.beforeAll('Get Bearer Token', async () => {
   requestHeaders = JSON.parse(
     stringFormat(
       JSON.stringify(requestHeadersJson),
@@ -25,8 +25,8 @@ test.describe('Request a Quote', () => {
       requestHeaders,
       requestQuoteJson
     )
-
     const requestQuoteResponseBody = await requestQuoteResponse.json()
+    const quoteId = requestQuoteResponseBody.quoteId
     const expectedRequestQuoteResponseBody = JSON.parse(
       JSON.stringify(expectedRequestQuoteResponseJson)
     )
@@ -37,8 +37,6 @@ test.describe('Request a Quote', () => {
       requestQuoteResponseBody,
       expectedRequestQuoteResponseBody
     )
-
-    const quoteId = requestQuoteResponseBody.quoteId
     expect(quoteId).not.toBeNull()
     expect(quoteId).not.toBe('')
     expect(quoteId).not.toBeUndefined()
@@ -46,7 +44,7 @@ test.describe('Request a Quote', () => {
 
   test('Request Quote with missing parameter', async ({ request }) => {
     //delete 'pair' parameter from request body
-    const missingParamRequestQuoteJson = requestQuoteJson
+    const missingParamRequestQuoteJson = { ...requestQuoteJson }
     delete missingParamRequestQuoteJson.pair
 
     const requestQuoteResponse = await apiRequest.post(
@@ -65,7 +63,7 @@ test.describe('Request a Quote', () => {
 
   test('Request Quote with invalid parameter', async ({ request }) => {
     //delete 'side' parameter from request body & adding invalid value to side parameter
-    const invalidRequestQuoteJson = requestQuoteJson
+    const invalidRequestQuoteJson = { ...requestQuoteJson }
     delete invalidRequestQuoteJson.side
     invalidRequestQuoteJson.side = 'test'
 
@@ -74,8 +72,8 @@ test.describe('Request a Quote', () => {
       requestHeaders,
       invalidRequestQuoteJson
     )
-
     const requestQuoteResponseBody = await requestQuoteResponse.json()
+
     apiAssertions.assertResponseStatus(requestQuoteResponse, 400)
     apiAssertions.assertResponseErrorMessage(
       requestQuoteResponseBody,

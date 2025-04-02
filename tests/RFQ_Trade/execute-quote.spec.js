@@ -12,7 +12,7 @@ const executedQuoteId = '18504c4d-5b8a-4790-b8c7-906781c1a6c3'
 let requestHeaders
 let quoteId
 
-test.beforeAll('test setup', async () => {
+test.beforeAll('Get Bearer Token', async () => {
   requestHeaders = JSON.parse(
     stringFormat(
       JSON.stringify(requestHeadersJson),
@@ -42,17 +42,16 @@ test.beforeEach('Request quote and fetch quote id', async () => {
 
 test.describe('Execute a Quote', () => {
   test('Valid Quote Execution', async ({ request }) => {
+    const executeQuoteRequest = { ...executeQuoteRequestJson }
     const executeQuoteResponse = await apiRequest.post(
       '/api/v1/orders',
       requestHeaders,
-      stringFormat(JSON.stringify(executeQuoteRequestJson), quoteId)
+      stringFormat(JSON.stringify(executeQuoteRequest), quoteId)
     )
     const executeQuoteResponseBody = await executeQuoteResponse.json()
-
+    const orderId = executeQuoteResponseBody.order.orderId
     apiAssertions.assertThatResponseIsOk(executeQuoteResponse)
     apiAssertions.assertResponseStatus(executeQuoteResponse, 200)
-
-    const orderId = executeQuoteResponseBody.order.orderId
     expect(orderId).not.toBeNull()
     expect(orderId).not.toBe('')
     expect(orderId).not.toBeUndefined()
@@ -60,16 +59,15 @@ test.describe('Execute a Quote', () => {
 
   test('Execute Quote with invalid Quote Id', async ({ request }) => {
     //delete 'quoteId' parameter from request body and add invalid quote id
-    const invalidExecuteQuoteRequestJson = executeQuoteRequestJson
+    const invalidExecuteQuoteRequestJson = { ...executeQuoteRequestJson }
     delete invalidExecuteQuoteRequestJson.quoteId
     invalidExecuteQuoteRequestJson.quoteId = invalidQuoteId
 
     const executeQuoteResponse = await apiRequest.post(
       '/api/v1/orders',
       requestHeaders,
-      executeQuoteRequestJson
+      invalidExecuteQuoteRequestJson
     )
-
     const executeQuoteResponseBody = await executeQuoteResponse.json()
 
     apiAssertions.assertResponseStatus(executeQuoteResponse, 404)
@@ -81,15 +79,14 @@ test.describe('Execute a Quote', () => {
 
   test('Execute Quote with no Quote Id', async ({ request }) => {
     //delete 'quoteId' parameter from request body
-    const invalidExecuteQuoteRequestJson = executeQuoteRequestJson
+    const invalidExecuteQuoteRequestJson = { ...executeQuoteRequestJson }
     delete invalidExecuteQuoteRequestJson.quoteId
 
     const executeQuoteResponse = await apiRequest.post(
       '/api/v1/orders',
       requestHeaders,
-      executeQuoteRequestJson
+      invalidExecuteQuoteRequestJson
     )
-
     const executeQuoteResponseBody = await executeQuoteResponse.json()
 
     apiAssertions.assertResponseStatus(executeQuoteResponse, 400)
@@ -101,16 +98,15 @@ test.describe('Execute a Quote', () => {
 
   test('Execute Quote with already executed Quoted Id', async ({ request }) => {
     //delete 'quoteId' parameter from request body and add invalid quote id
-    const invalidExecuteQuoteRequestJson = executeQuoteRequestJson
+    const invalidExecuteQuoteRequestJson = { ...executeQuoteRequestJson }
     delete invalidExecuteQuoteRequestJson.quoteId
     invalidExecuteQuoteRequestJson.quoteId = executedQuoteId
 
     const executeQuoteResponse = await apiRequest.post(
       '/api/v1/orders',
       requestHeaders,
-      executeQuoteRequestJson
+      invalidExecuteQuoteRequestJson
     )
-
     const executeQuoteResponseBody = await executeQuoteResponse.json()
 
     apiAssertions.assertResponseStatus(executeQuoteResponse, 409)
