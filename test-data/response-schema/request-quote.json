@@ -1,0 +1,118 @@
+{
+  "type": "object",
+  "properties": {
+    "quoteId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "requestedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "accountId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "pair": {
+      "type": "string"
+    },
+    "side": {
+      "type": "string",
+      "enum": ["BUY", "SELL"]
+    },
+    "deliverQuantity": {
+      "type": "string",
+      "pattern": "^[0-9]+(.[0-9]+)?$"
+    },
+    "deliverCurrency": {
+      "type": "string"
+    },
+    "receiveQuantity": {
+      "type": "string",
+      "pattern": "^[0-9]+(.[0-9]+)?$"
+    },
+    "receiveCurrency": {
+      "type": "string"
+    },
+    "price": {
+      "type": "string",
+      "pattern": "^[0-9]+(.[0-9]+)?$"
+    },
+    "baseQuantity": {
+      "type": "string",
+      "pattern": "^[0-9]+(.[0-9]+)?$"
+    },
+    "quoteQuantity": {
+      "type": "string",
+      "pattern": "^[0-9]+(.[0-9]+)?$"
+    },
+    "feeCurrency": {
+      "type": "string"
+    },
+    "clientFeeRate": {
+      "type": "string",
+      "pattern": "^[0-9]+(.[0-9]+)?$"
+    },
+    "clientFeeQuantity": {
+      "type": "string",
+      "pattern": "^[0-9]+(.[0-9]+)?$"
+    },
+    "providerFeeRate": {
+      "type": "string",
+      "pattern": "^[0-9]+(.[0-9]+)?$"
+    },
+    "providerFeeQuantity": {
+      "type": "string",
+      "pattern": "^[0-9]+(.[0-9]+)?$"
+    },
+    "quoteStatus": {
+      "type": "string",
+      "enum": ["AWAITING_RESPONSE", "COMPLETED", "FAILED", "CANCELLED"]
+    },
+    "clientReference": {
+      "type": "string"
+    },
+    "tradeTaxRate": {
+      "type": "string",
+      "pattern": "^[0-9]+(.[0-9]+)?$"
+    },
+    "clientTaxQuantity": {
+      "type": "string",
+      "pattern": "^[0-9]+(.[0-9]+)?$"
+    },
+    "providerTaxQuantity": {
+      "type": "string",
+      "pattern": "^[0-9]+(.[0-9]+)?$"
+    }
+  },
+  "required": [
+    "quoteId",
+    "requestedAt",
+    "expiresAt",
+    "accountId",
+    "pair",
+    "side",
+    "deliverQuantity",
+    "deliverCurrency",
+    "receiveQuantity",
+    "receiveCurrency",
+    "price",
+    "baseQuantity",
+    "quoteQuantity",
+    "feeCurrency",
+    "clientFeeRate",
+    "clientFeeQuantity",
+    "providerFeeRate",
+    "providerFeeQuantity",
+    "quoteStatus",
+    "clientReference",
+    "tradeTaxRate",
+    "clientTaxQuantity",
+    "providerTaxQuantity"
+  ],
+  "additionalProperties": false
+}
