@@ -1,0 +1,88 @@
+{
+  "type": "object",
+  "properties": {
+    "totalCount": {
+      "type": "string"
+    },
+    "after": {
+      "type": "string"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "type": "string"
+          },
+          "accountId": {
+            "type": "string"
+          },
+          "orderStatus": {
+            "type": "string"
+          },
+          "side": {
+            "type": "string"
+          },
+          "pair": {
+            "type": "string"
+          },
+          "strategy": {
+            "type": "string"
+          },
+          "orderPrice": {
+            "type": "string"
+          },
+          "orderQuantity": {
+            "type": "string"
+          },
+          "fillQuantity": {
+            "type": "string"
+          },
+          "fillPrice": {
+            "type": "string"
+          },
+          "fillPercentage": {
+            "type": "string"
+          },
+          "clientFeeRate": {
+            "type": "string"
+          },
+          "providerFeeRate": {
+            "type": "string"
+          },
+          "placedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "clientReference": {
+            "type": ["string", "null"]
+          }
+        },
+        "required": [
+          "orderId",
+          "accountId",
+          "orderStatus",
+          "side",
+          "pair",
+          "strategy",
+          "orderPrice",
+          "orderQuantity",
+          "fillQuantity",
+          "fillPrice",
+          "fillPercentage",
+          "clientFeeRate",
+          "providerFeeRate",
+          "placedAt",
+          "completedAt",
+          "clientReference"
+        ]
+      }
+    }
+  },
+  "required": ["totalCount", "after", "items"]
+}

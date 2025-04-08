@@ -1,11 +1,16 @@
 import { test, expect } from '@playwright/test'
 import { stringFormat } from '../../utils/common.js'
+const Ajv = require('ajv')
+const ajv = new Ajv()
+const addFormats = require('ajv-formats')
+addFormats(ajv)
 
 const requestHeadersJson = require('../../test-data/request-json/request_headers.json')
 const requestQuoteJson = require('../../test-data/request-json/post_quote_request_body.json')
 const executeQuoteRequestJson = require('../../test-data/request-json/execute_quote_request_body.json')
 const apiAssertions = require('../../utils/api-assertions.js')
 const apiRequest = require('../../utils/api-request.js')
+const executeQuoteSchemaJson = require('../../test-data/response-schema/execute-quote.json')
 
 const invalidQuoteId = '0d097c11-90ea-4bbb-a176-aab836dd22f5'
 const executedQuoteId = '18504c4d-5b8a-4790-b8c7-906781c1a6c3'
@@ -114,5 +119,35 @@ test.describe('Execute a Quote', () => {
       executeQuoteResponseBody,
       'Quote already accepted'
     )
+  })
+
+  test('Validate Execute Quote response json scehma', async ({ request }) => {
+    const executeQuoteRequest = { ...executeQuoteRequestJson }
+    const executeQuoteResponse = await apiRequest.post(
+      '/api/v1/orders',
+      requestHeaders,
+      stringFormat(JSON.stringify(executeQuoteRequest), quoteId)
+    )
+    const executeQuoteResponseBody = await executeQuoteResponse.json()
+    apiAssertions.assertThatResponseIsOk(executeQuoteResponse)
+    apiAssertions.assertResponseStatus(executeQuoteResponse, 200)
+
+    const expectedExecuteQuoteSchema = JSON.parse(
+      JSON.stringify(executeQuoteSchemaJson)
+    )
+
+    // Validate the response schema with help of ajv package
+    const schemaMatches = ajv.validate(
+      expectedExecuteQuoteSchema,
+      executeQuoteResponseBody
+    )
+
+    // If the response does not match the schema, log the errors
+    if (!schemaMatches) {
+      console.log('Schema validation errors:', ajv.errors)
+    }
+
+    // Assert that the response body is valid according to the schema
+    expect(schemaMatches).toBe(true)
   })
 })

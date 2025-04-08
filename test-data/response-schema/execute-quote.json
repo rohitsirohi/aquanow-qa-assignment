@@ -1,0 +1,226 @@
+{
+  "type": "object",
+  "properties": {
+    "order": {
+      "type": "object",
+      "properties": {
+        "orderId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "accountId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "orderStatus": {
+          "type": "string",
+          "enum": ["FILLED", "PENDING", "CANCELLED"]
+        },
+        "side": {
+          "type": "string",
+          "enum": ["BUY", "SELL"]
+        },
+        "pair": {
+          "type": "string"
+        },
+        "strategy": {
+          "type": "string",
+          "enum": ["RFQ", "LIMIT", "MARKET"]
+        },
+        "orderPrice": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?$"
+        },
+        "orderQuantity": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?$"
+        },
+        "fillQuantity": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?$"
+        },
+        "fillPrice": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?$"
+        },
+        "fillPercentage": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?$"
+        },
+        "placedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "clientFeeRate": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?$"
+        },
+        "providerFeeRate": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)?$"
+        },
+        "completedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "clientReference": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "orderId",
+        "accountId",
+        "orderStatus",
+        "side",
+        "pair",
+        "strategy",
+        "orderPrice",
+        "orderQuantity",
+        "fillQuantity",
+        "fillPrice",
+        "fillPercentage",
+        "placedAt",
+        "clientFeeRate",
+        "providerFeeRate",
+        "completedAt",
+        "clientReference"
+      ]
+    },
+    "executions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "executionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "orderId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "accountId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "executedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "pair": {
+            "type": "string"
+          },
+          "side": {
+            "type": "string",
+            "enum": ["BUY", "SELL"]
+          },
+          "deliverCurrency": {
+            "type": "string"
+          },
+          "deliverQuantity": {
+            "type": "string",
+            "pattern": "^[0-9]+(\\.[0-9]+)?$"
+          },
+          "receiveCurrency": {
+            "type": "string"
+          },
+          "receiveQuantity": {
+            "type": "string",
+            "pattern": "^[0-9]+(\\.[0-9]+)?$"
+          },
+          "price": {
+            "type": "string",
+            "pattern": "^[0-9]+(\\.[0-9]+)?$"
+          },
+          "tradeTaxRate": {
+            "type": "string",
+            "pattern": "^[0-9]+(\\.[0-9]+)?$"
+          },
+          "clientFeeRate": {
+            "type": "string",
+            "pattern": "^[0-9]+(\\.[0-9]+)?$"
+          },
+          "providerFeeRate": {
+            "type": "string",
+            "pattern": "^[0-9]+(\\.[0-9]+)?$"
+          },
+          "clientFeeQuantity": {
+            "type": "string",
+            "pattern": "^[0-9]+(\\.[0-9]+)?$"
+          },
+          "providerFeeQuantity": {
+            "type": "string",
+            "pattern": "^[0-9]+(\\.[0-9]+)?$"
+          },
+          "clientTaxQuantity": {
+            "type": "string",
+            "pattern": "^[0-9]+(\\.[0-9]+)?$"
+          },
+          "providerTaxQuantity": {
+            "type": "string",
+            "pattern": "^[0-9]+(\\.[0-9]+)?$"
+          },
+          "feeCurrency": {
+            "type": "string"
+          },
+          "executionStatus": {
+            "type": "string"
+          },
+          "confirmedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tradeDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "valueDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "clientReference": {
+            "type": "string"
+          },
+          "baseQuantity": {
+            "type": "string",
+            "pattern": "^[0-9]+(\\.[0-9]+)?$"
+          },
+          "quoteQuantity": {
+            "type": "string",
+            "pattern": "^[0-9]+(\\.[0-9]+)?$"
+          }
+        },
+        "required": [
+          "executionId",
+          "orderId",
+          "accountId",
+          "executedAt",
+          "pair",
+          "side",
+          "deliverCurrency",
+          "deliverQuantity",
+          "receiveCurrency",
+          "receiveQuantity",
+          "price",
+          "tradeTaxRate",
+          "clientFeeRate",
+          "providerFeeRate",
+          "clientFeeQuantity",
+          "providerFeeQuantity",
+          "clientTaxQuantity",
+          "providerTaxQuantity",
+          "feeCurrency",
+          "executionStatus",
+          "confirmedAt",
+          "tradeDate",
+          "valueDate",
+          "clientReference",
+          "baseQuantity",
+          "quoteQuantity"
+        ]
+      }
+    }
+  },
+  "required": ["order", "executions"],
+  "additionalProperties": false
+}

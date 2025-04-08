@@ -18,8 +18,7 @@ test.beforeAll('Get Bearer Token', async () => {
   requestHeaders = JSON.parse(
     stringFormat(
       JSON.stringify(requestHeadersJson),
-      // `Bearer ${process.env.BEARER_TOKEN}`
-      `Bearer eyJraWQiOiJBeWRrbjkrck5lSTlzdll5N3NSWjFqV3B3dGE1UlBSZTBJRXlKT0FzZHpBPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI1MDlnZ242aW5qZTNpN2JzZmg2MGthODU0YiIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXF1YWNhbXMtZGV2XC93cml0ZSBhcXVhY2Ftcy1kZXZcL3JlYWQgY29tcGxpYW5jZVwvZGVmYXVsdCIsImF1dGhfdGltZSI6MTc0Mzk5ODc1NCwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfZkkxeWJTT2RDIiwiZXhwIjoxNzQ0MDAyMzU0LCJpYXQiOjE3NDM5OTg3NTQsInZlcnNpb24iOjIsImp0aSI6ImUwZWUxZWQwLWY2ZDctNDBiNC1hZjQ1LTBkZTExMTA5ZDk2MiIsImNsaWVudF9pZCI6IjUwOWdnbjZpbmplM2k3YnNmaDYwa2E4NTRiIn0.0aopRlWsf0ZZkPq26fwLUOu30otwuxVRx6fIaHIxr-R5XaTYGn787g5EmsZrt1rND_Pdcdgy4TbsMCA8zYcFgpG3CGhubypPwfKwg1hCZLx6p0q75vMTBkeI17cKts-09XWRKG7Zzl5nGGWiUdhSnGwCJitRIlZvfF7RZPASRQpaRVd0OClXPbH2QQhrYuieChV8zGTZ6yS6ifyaGY_En1Rq1RJIq355HlVlpQ7jNgelcMQNEbLmCWJiQbhAdqbj02RoTIdX-zxX0ngD2f8MEUv18jZZK3TcAjHUE0N83nu-SjtJjLrROKs-BQfZ0-u_IdbvGI6RogswHUZ8YEg-4g`
+      `Bearer ${process.env.BEARER_TOKEN}`
     )
   )
 })
@@ -86,6 +85,7 @@ test.describe('Request a Quote', () => {
       'side must be one of BUY SELL'
     )
   })
+
   test('Validate Request Quote response json scehma', async ({ request }) => {
     const requestQuoteResponse = await apiRequest.post(
       '/api/v1/quotes',
